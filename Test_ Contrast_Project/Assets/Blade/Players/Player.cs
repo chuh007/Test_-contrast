@@ -26,18 +26,12 @@ namespace Blade.Players
             base.Awake();
             _stateMachine = new EntityStateMachine(this, states);
 
-            PlayerInput.OnRollingPressed += HandleRollingKeyPressed;
         }
 
         private void OnDisable()
         {
-            PlayerInput.OnRollingPressed -= HandleRollingKeyPressed;
         }
 
-        private void HandleRollingKeyPressed()
-        {
-            _stateMachine.ChangeState("ROLLING");
-        }
 
         private void Start()
         {

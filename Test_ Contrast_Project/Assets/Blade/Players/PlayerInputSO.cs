@@ -8,10 +8,8 @@ namespace Blade.Players
     public class PlayerInputSO : ScriptableObject, Controls.IPlayerActions
     {
         [SerializeField] private LayerMask whatIsGround;
-        // public event Action<Vector2> OnMovementChange;
-        public event Action OnAttackPressed;
-        public event Action OnRollingPressed;
         
+        public event Action OnMousePressed;
         public Vector2 MovementKey {get; private set;}
 
         private Controls _controls;
@@ -33,27 +31,16 @@ namespace Blade.Players
         {
             _controls.Player.Disable();
         }
-
-        public void OnMove(InputAction.CallbackContext context)
-        {
-            MovementKey = context.ReadValue<Vector2>();
-        }
-
-        public void OnAttack(InputAction.CallbackContext context)
-        {
-            if(context.performed)
-                OnAttackPressed?.Invoke();
-        }
-
+        
         public void OnPointer(InputAction.CallbackContext context)
         {
             _screenPosition = context.ReadValue<Vector2>();
         }
 
-        public void OnRolling(InputAction.CallbackContext context)
+        public void OnMouse(InputAction.CallbackContext context)
         {
             if(context.performed)
-                OnRollingPressed?.Invoke();
+                OnMousePressed?.Invoke();
         }
 
         public Vector3 GetWorldPosition()

@@ -5,6 +5,8 @@ namespace Blade.Players.States
 {
     public abstract class PlayerCanAttackState : PlayerState
     {
+        protected Vector3 _playerDirection;
+        
         protected PlayerCanAttackState(Entity entity, int animationHash) : base(entity, animationHash)
         {
             
@@ -13,20 +15,31 @@ namespace Blade.Players.States
         public override void Enter()
         {
             base.Enter();
-            _player.PlayerInput.OnAttackPressed += HandleAttackPressed;
+            _player.PlayerInput.OnMousePressed += HandleMousePressed;
         }
+
+        
 
         public override void Exit()
         {
-            _player.PlayerInput.OnAttackPressed -= HandleAttackPressed;
+            _player.PlayerInput.OnMousePressed -= HandleMousePressed;
             base.Exit();
         }
         
-        
-        private void HandleAttackPressed()
+        private void HandleMousePressed()
         {
-            _player.ChangeState("ATTACK");
+            _playerDirection = GetPlayerDirection();
+            _player.ChangeState("MOVE");
         }
+        
+        private Vector3 GetPlayerDirection()
+        {
+            Vector3 targetPosition = _player.PlayerInput.GetWorldPosition();
+            Vector3 direction = targetPosition - _player.transform.position;
+            direction.y = 0;
+            return direction.normalized;
+        }
+        
 
     }
 }
