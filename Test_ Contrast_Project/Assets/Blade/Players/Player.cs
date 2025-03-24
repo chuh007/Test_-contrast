@@ -4,6 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Blade.Players
 {
@@ -12,6 +13,7 @@ namespace Blade.Players
         [field: SerializeField] public PlayerInputSO PlayerInput { get; private set; }
 
         [SerializeField] private StateDataSO[] states;
+        [SerializeField] private TextMeshProUGUI StateText;
 
         private EntityStateMachine _stateMachine;
 
@@ -43,7 +45,11 @@ namespace Blade.Players
             _stateMachine.UpdateStateMachine();
         }
 
-        public void ChangeState(string newStatName) => _stateMachine.ChangeState(newStatName);
+        public void ChangeState(string newStatName)
+        {
+            _stateMachine.ChangeState(newStatName);
+            StateText.text = newStatName;
+        }
 
     }
 }

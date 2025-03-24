@@ -5,7 +5,8 @@ namespace Blade.Players.States
 {
     public abstract class PlayerCanAttackState : PlayerState
     {
-        protected Vector3 _playerDirection;
+        protected Vector3 PlayerDirection;
+        protected Vector3 TargetPos;
         
         protected PlayerCanAttackState(Entity entity, int animationHash) : base(entity, animationHash)
         {
@@ -28,14 +29,16 @@ namespace Blade.Players.States
         
         private void HandleMousePressed()
         {
-            _playerDirection = GetPlayerDirection();
+            PlayerDirection = GetPlayerDirection();
+            Debug.Log(PlayerDirection);
             _player.ChangeState("MOVE");
         }
         
         private Vector3 GetPlayerDirection()
         {
-            Vector3 targetPosition = _player.PlayerInput.GetWorldPosition();
-            Vector3 direction = targetPosition - _player.transform.position;
+            TargetPos = _player.PlayerInput.GetWorldPosition();
+            Debug.Log(TargetPos);
+            Vector3 direction = TargetPos - _player.transform.position;
             direction.y = 0;
             return direction.normalized;
         }

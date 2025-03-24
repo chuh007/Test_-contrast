@@ -9,7 +9,6 @@ public class CharacterMovement : MonoBehaviour, IEntityComponent
     [SerializeField] private float SprintSpeedMultiplier = 2f;
     [SerializeField] private float gravity = -9.8f;
     [SerializeField] private CharacterController controller;
-    [SerializeField] private TextMeshProUGUI SprintTxt;
 
     private Entity _entity;
 
@@ -28,27 +27,9 @@ public class CharacterMovement : MonoBehaviour, IEntityComponent
     private Vector3 _movementDirection;
     private bool isSprint;
 
-    public void SetSprint(bool value)
-    {
-        isSprint = value;
-        SprintTxt.text = value ? "Sprint" : "Walk";
-    }
-
-    public void ToggleSprint()
-    {
-        isSprint = !isSprint;
-        SprintTxt.text = isSprint ? "Sprint" : "Walk";
-    }
-
     public void SetMovementDirection(Vector2 movementInput)
     {
         _movementDirection = new Vector3(movementInput.x, 0, movementInput.y).normalized;
-    }
-
-    public void Jump()
-    {
-        if (isGround)
-            _verticalVelocity = Mathf.Sqrt(gravity * -0.5f);
     }
 
     private void FixedUpdate()
@@ -98,5 +79,4 @@ public class CharacterMovement : MonoBehaviour, IEntityComponent
         _movementDirection = Vector3.zero;
     }
     
-    public void SetAutoMovement(Vector3 autoMovement) => _autoMovement = autoMovement;
 }
