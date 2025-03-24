@@ -10,6 +10,7 @@ namespace Blade.Players
         [SerializeField] private LayerMask whatIsGround;
         
         public event Action OnMousePressed;
+        public event Action OnAttackKeyPressed;
         public Vector2 MovementKey {get; private set;}
 
         private Controls _controls;
@@ -41,6 +42,12 @@ namespace Blade.Players
         {
             if(context.performed)
                 OnMousePressed?.Invoke();
+        }
+
+        public void OnAttack(InputAction.CallbackContext context)
+        {
+            if(context.performed)
+                OnAttackKeyPressed?.Invoke();
         }
 
         public Vector3 GetWorldPosition()

@@ -12,12 +12,7 @@ namespace Blade.Players
         private readonly int _attackSpeedHash = Animator.StringToHash("ATTACK_SPEED");
 
         private float _attackSpeed = 1f;
-        private float _lastAttackTime;
 
-        public bool useMouseDirection;
-        
-
-        
         public float AttackSpeed
         {
             get => _attackSpeed;
@@ -42,7 +37,7 @@ namespace Blade.Players
 
         public void EndAttack()
         {
-            _lastAttackTime = Time.time;
+            
         }
     }
 }

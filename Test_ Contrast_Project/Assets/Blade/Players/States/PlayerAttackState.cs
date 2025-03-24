@@ -17,27 +17,7 @@ namespace Blade.Players.States
             base.Enter();
             _attackCompo.Attack();
             _movement.CanManualMovement = false;
-
-            ApplyAttackData();
-        }
-
-        private void ApplyAttackData()
-        {
-            Vector3 playerDirection = GetPlayerDirection();
-            _player.transform.rotation = Quaternion.LookRotation(playerDirection);
-
-        }
-
-        private Vector3 GetPlayerDirection()
-        {
-            if (_attackCompo.useMouseDirection == false)
-                return _player.transform.forward;
-            
-            
-            Vector3 targetPosition = _player.PlayerInput.GetWorldPosition();
-            Vector3 direction = targetPosition - _player.transform.position;
-            direction.y = 0;
-            return direction.normalized;
+            _player.isAttack = false;
         }
         
         public override void Exit()
@@ -51,7 +31,7 @@ namespace Blade.Players.States
         public override void Update()
         {
             base.Update();
-            if(_isTriggerCall)
+            if (_isTriggerCall)
                 _player.ChangeState("IDLE");
         }
     }

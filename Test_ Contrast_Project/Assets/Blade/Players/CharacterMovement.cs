@@ -25,11 +25,10 @@ public class CharacterMovement : MonoBehaviour, IEntityComponent
     public Vector3 Velocity => _velocity;
     private float _verticalVelocity;
     private Vector3 _movementDirection;
-    private bool isSprint;
 
-    public void SetMovementDirection(Vector2 movementInput)
+    public void SetMovementDirection(Vector3 movementInput)
     {
-        _movementDirection = new Vector3(movementInput.x, 0, movementInput.y).normalized;
+        _movementDirection = new Vector3(movementInput.x, 0, movementInput.z).normalized;
     }
 
     private void FixedUpdate()
@@ -42,8 +41,8 @@ public class CharacterMovement : MonoBehaviour, IEntityComponent
     {
         if (CanManualMovement)
         {
-            _velocity = Quaternion.Euler(0, -45f, 0) * _movementDirection;
-            _velocity *= (isSprint ? moveSpeed * SprintSpeedMultiplier : moveSpeed) * Time.fixedDeltaTime;
+            _velocity = _movementDirection;
+            _velocity *= moveSpeed * Time.fixedDeltaTime;
         }
         else
         {

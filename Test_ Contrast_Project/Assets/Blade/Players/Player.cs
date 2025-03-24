@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Blade.Players
 {
@@ -14,12 +15,15 @@ namespace Blade.Players
 
         [SerializeField] private StateDataSO[] states;
         [SerializeField] private TextMeshProUGUI StateText;
-
+        public GameObject targetPosPrefab;
+        [SerializeField] private Image image;
+        
         private EntityStateMachine _stateMachine;
 
         #region Temp region
 
         public float rollingVelocity = 2.2f;
+        public bool isAttack = false;
 
         #endregion
         
@@ -49,6 +53,12 @@ namespace Blade.Players
         {
             _stateMachine.ChangeState(newStatName);
             StateText.text = newStatName;
+        }
+
+        public void ChangeAttackUI(bool attack)
+        {
+            if(attack) image.color = Color.yellow;
+            else image.color = Color.white;
         }
 
     }
