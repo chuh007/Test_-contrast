@@ -1,6 +1,8 @@
 using Blade.Entities;
 using Blade.FSM;
 using System;
+using System.Collections;
+using Blade.Players.States;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,8 +17,9 @@ namespace Blade.Players
 
         [SerializeField] private StateDataSO[] states;
         [SerializeField] private TextMeshProUGUI StateText;
-        public GameObject targetPosPrefab;
         [SerializeField] private Image image;
+        [SerializeField] private GameObject particle;
+        [SerializeField] private Transform debugTrm;
         
         private EntityStateMachine _stateMachine;
 
@@ -31,13 +34,9 @@ namespace Blade.Players
         {
             base.Awake();
             _stateMachine = new EntityStateMachine(this, states);
-
+            PlayerInput.OnAttackKeyPressed += HandleAttackPressed;
+            PlayerInput.OnMousePressed += HandleMousePressed;
         }
-
-        private void OnDisable()
-        {
-        }
-
 
         private void Start()
         {
@@ -49,6 +48,27 @@ namespace Blade.Players
             _stateMachine.UpdateStateMachine();
         }
 
+        private void OnDestroy()
+        {
+            PlayerInput.OnAttackKeyPressed -= HandleAttackPressed;
+            PlayerInput.OnMousePressed -= HandleMousePressed;
+        }
+
+        private void HandleAttackPressed()
+        {
+            if (!(_stateMachine.CurrentState is PlayerIdleState)) return;
+            isAttack = !isAttack;
+            ChangeAttackUI(isAttack);
+        }
+        
+        private void HandleMousePressed()
+        {
+            if (!(_stateMachine.CurrentState is PlayerIdleState)) return;
+            debugTrm.position = PlayerInput.GetWorldPosition();
+            ChangeState("MOVE");
+            ChangeAttackUI(false);
+        }
+        
         public void ChangeState(string newStatName)
         {
             _stateMachine.ChangeState(newStatName);
@@ -61,5 +81,12 @@ namespace Blade.Players
             else image.color = Color.white;
         }
 
+        public IEnumerator PlayParticle()
+        {
+            particle.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.3f);
+            particle.gameObject.SetActive(false);
+        }
+        
     }
 }

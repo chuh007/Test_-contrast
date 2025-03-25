@@ -13,8 +13,6 @@ namespace Blade.Players.States
         public override void Enter()
         {
             base.Enter();
-            _player.PlayerInput.OnMousePressed += HandleMousePressed;
-            _player.PlayerInput.OnAttackKeyPressed += HandleAttackPressed;
         }
 
         
@@ -22,23 +20,8 @@ namespace Blade.Players.States
 
         public override void Exit()
         {
-            _player.PlayerInput.OnMousePressed -= HandleMousePressed;
-            _player.PlayerInput.OnAttackKeyPressed -= HandleAttackPressed;
             base.Exit();
         }
         
-        private void HandleMousePressed()
-        {
-            _player.ChangeState("MOVE");
-            _player.ChangeAttackUI(false);
-        }
-        
-        
-        
-        private void HandleAttackPressed()
-        {
-            _player.isAttack = true;
-            _player.ChangeAttackUI(true);
-        }
     }
 }

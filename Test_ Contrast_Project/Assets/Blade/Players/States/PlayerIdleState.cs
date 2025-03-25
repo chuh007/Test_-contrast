@@ -23,6 +23,12 @@ namespace Blade.Players.States
             base.Update();
         }
 
+        public override void Exit()
+        {
+            base.Exit();
+        }
+
+        
     }
 }
 

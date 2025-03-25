@@ -20,6 +20,11 @@ namespace Blade.Entities
             OnAnimationEndTrigger?.Invoke();
         }
 
+        private void AnimationEvent()
+        {
+            OnAnimationEventTrigger?.Invoke();
+        }
+
         private void RollingEnd()
         {
             OnAnimationEndTrigger?.Invoke();

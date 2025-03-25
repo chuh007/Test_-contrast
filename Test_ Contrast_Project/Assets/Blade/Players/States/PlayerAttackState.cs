@@ -15,13 +15,15 @@ namespace Blade.Players.States
         public override void Enter()
         {
             base.Enter();
+            _animatorTrigger.OnAnimationEventTrigger += AnimationEventTrigger;
             _attackCompo.Attack();
             _movement.CanManualMovement = false;
             _player.isAttack = false;
         }
-        
+
         public override void Exit()
         {
+            _animatorTrigger.OnAnimationEventTrigger -= AnimationEventTrigger;
             _attackCompo.EndAttack();
             _movement.CanManualMovement = true;
             _movement.StopImmediately();
@@ -32,7 +34,14 @@ namespace Blade.Players.States
         {
             base.Update();
             if (_isTriggerCall)
+            {
                 _player.ChangeState("IDLE");
+            }
+        }
+        
+        private void AnimationEventTrigger()
+        {
+            _player.StartCoroutine(_player.PlayParticle());
         }
     }
 }

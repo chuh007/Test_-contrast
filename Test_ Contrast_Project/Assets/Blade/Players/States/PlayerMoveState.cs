@@ -22,9 +22,16 @@ namespace Blade.Players.States
         {
             base.Update();
             _movement.SetMovementDirection(PlayerDirection);
-            if (Vector3.Distance(TargetPos,_player.transform.position) < 1.2f)
-                if (_player.isAttack) _player.ChangeState("ATTACK");
-                else _player.ChangeState("IDLE");
+            if (_player.isAttack)
+            {
+                if (Vector3.Distance(TargetPos,_player.transform.position) < 1.5f)
+                    if (_player.isAttack) _player.ChangeState("ATTACK");
+            }
+            else
+            {
+                if (Vector3.Distance(TargetPos,_player.transform.position) < 1.2f)
+                    _player.ChangeState("IDLE");
+            }
         }
 
     }
