@@ -17,10 +17,10 @@ namespace Code.Player
         private bool _isJumping;
 
         public event Action<string> OnStateChanged;
-        private string currentState = "IDLE";
+        private string _currentState = "IDLE";
 
-        private bool isMovingToAttack = false;
-        private bool isKeepingAttack = false;
+        private bool _isMovingToAttack = false;
+        private bool _isKeepingAttack = false;
 
         protected override void Awake()
         {
@@ -39,7 +39,7 @@ namespace Code.Player
         {
             _stateMachine.UpdateStateMachine();
             
-            if (_attackTarget != null && isMovingToAttack)
+            if (_attackTarget && _isMovingToAttack)
             {
                 bool hasArrived = !_agent.pathPending &&
                                   _agent.remainingDistance <= _agent.stoppingDistance &&
@@ -47,26 +47,26 @@ namespace Code.Player
 
                 if (hasArrived)
                 {
-                    isMovingToAttack = false;
+                    _isMovingToAttack = false;
                     _agent.isStopped = true;
                     ChangeState("ATTACK");
                     return;
                 }
             }
             
-            if (_attackTarget != null && isKeepingAttack && currentState != "ATTACK")
+            if (_attackTarget && _isKeepingAttack && _currentState != "ATTACK")
             {
                 ChangeState("ATTACK");
                 return;
             }
             
-            if (_agent.isOnOffMeshLink && currentState != "JUMP" && !_isJumping)
+            if (_agent.isOnOffMeshLink && _currentState != "JUMP" && !_isJumping)
             {
                 ChangeState("JUMP");
                 return;
             }
             
-            if (_attackTarget != null && currentState == "ATTACK")
+            if (_attackTarget != null && _currentState == "ATTACK")
             {
                 SmoothRotateToTarget();
             }
@@ -86,7 +86,7 @@ namespace Code.Player
             if (_agent == null) return;
 
             _attackTarget = target;
-            isMovingToAttack = true;
+            _isMovingToAttack = true;
 
             Vector3 direction = (transform.position - target.transform.position).normalized;
             float stoppingDistance = 1.5f;
@@ -97,9 +97,9 @@ namespace Code.Player
             SmoothRotateToTarget();
         }
         
-        public void SmoothRotateToTarget()
+        private void SmoothRotateToTarget()
         {
-            if (_attackTarget == null) return;
+            if (!_attackTarget) return;
 
             Vector3 direction = (_attackTarget.transform.position - transform.position).normalized;
             direction.y = 0f;
@@ -110,20 +110,20 @@ namespace Code.Player
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
         
-        public void ClearAttackTarget()
+        private void ClearAttackTarget()
         {
             _attackTarget = null;
-            isMovingToAttack = false;
+            _isMovingToAttack = false;
         }
 
         public void ChangeState(string newState)
         {
             _stateMachine.ChangeState(newState);
-            currentState = newState;
+            _currentState = newState;
             OnStateChanged?.Invoke(newState);
         }
 
-        public string GetCurrentState() => currentState;
+        public string GetCurrentState() => _currentState;
     
     }
 }
