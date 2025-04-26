@@ -24,11 +24,12 @@ namespace TempCode
 
         protected override void HandleHit()
         {
-            
+            throw new NotImplementedException();
         }
 
         protected override void HandleDead()
         {
+            throw new NotImplementedException();
         }
 
         private void Start()

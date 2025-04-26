@@ -1,6 +1,8 @@
+using Blade.Combat;
 using Blade.Entities;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Blade.Enemies
 {
@@ -16,6 +18,8 @@ namespace Blade.Enemies
 
         #endregion
 
+        
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
@@ -23,6 +27,7 @@ namespace Blade.Enemies
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position,attackRange);
         }
+        
         
         protected override void AddComponents()
         {
@@ -39,5 +44,6 @@ namespace Blade.Enemies
             }
             return default;
         }
+
     }
 }

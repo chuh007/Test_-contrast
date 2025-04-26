@@ -1,6 +1,7 @@
 using System;
 using Blade.Combat;
 using Blade.Entities;
+using Code.Combat;
 using UnityEngine;
 
 namespace Blade.Players
@@ -8,7 +9,9 @@ namespace Blade.Players
     public class PlayerAttackCompo : MonoBehaviour, IEntityComponent
     {
         [SerializeField] private AttackDataSO[] attackDataList;   //1
+        [SerializeField] private Transform MuzleTrm;
         [SerializeField] private float comboWindow = 0.7f;
+        [SerializeField] private Bullet bulletPrefab;
         private Entity _entity;
         private EntityAnimator _entityAnimator;
         private EntityVFX _vfxCompo;
@@ -32,7 +35,7 @@ namespace Blade.Players
             }
         }
 
-        public AttackDataSO GetCurrentAttackData()  //2
+        public AttackDataSO GetCurrentAttackData()
         {
             Debug.Assert(attackDataList.Length > ComboCounter, "Combo counter is out of range");
             return attackDataList[ComboCounter];
@@ -65,6 +68,8 @@ namespace Blade.Players
             bool comboWindowExhaust = Time.time >= _lastAttackTime + comboWindow;
             if (comboCounterOver || comboWindowExhaust)
                 ComboCounter = 0;
+            Bullet bullet = Instantiate(bulletPrefab, MuzleTrm.position, Quaternion.identity);
+            bullet.InitAndFire(_entity.transform.forward, 10);
             
             _entityAnimator.SetParam(_comboCounterHash, ComboCounter);
         }
