@@ -2,7 +2,9 @@ using System;
 using Blade.Core.Dependencies;
 using Blade.Entities;
 using Blade.FSM;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Blade.Players
 {
@@ -12,7 +14,8 @@ namespace Blade.Players
         [field: SerializeField] public PlayerInputSO PlayerInput { get; private set; }
 
         [SerializeField] private StateDataSO[] states;
-        
+        [SerializeField] private Image hitImage;
+        [SerializeField] private Image GameOverImage;
         private EntityStateMachine _stateMachine;
 
         [Provide]
@@ -33,10 +36,19 @@ namespace Blade.Players
 
         protected override void HandleHit()
         {
+            Debug.Log("마즘");
+            hitImage.DOFade(0.6f, 0.15f).onComplete += ReFade;
+        }
+
+        private void ReFade()
+        {
+            hitImage.DOFade(0, 0.3f);
         }
 
         protected override void HandleDead()
         {
+            GameOverImage.gameObject.SetActive(true);
+            Time.timeScale = 0;
         }
 
         private void OnDestroy()

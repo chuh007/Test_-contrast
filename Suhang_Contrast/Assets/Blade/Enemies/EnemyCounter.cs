@@ -1,11 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 namespace Blade.Enemies
 {
     public class EnemyCounter : MonoBehaviour
     {
+        [SerializeField] private Image gameClearImage;
         public int enemyCount = 0;
         private void Awake()
         {
@@ -23,6 +25,8 @@ namespace Blade.Enemies
             if (enemyCount == 0)
             {
                 Debug.Log("전멸");
+                gameClearImage.gameObject.SetActive(true);
+                Time.timeScale = 0;
             }
         }
     }

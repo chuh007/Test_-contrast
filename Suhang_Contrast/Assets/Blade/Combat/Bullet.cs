@@ -28,9 +28,9 @@ namespace Code.Combat
             Vector3 pos = contact.point;
             Vector3 normal = contact.normal;
             Debug.Log("hit");
-            if (other.collider.TryGetComponent(out IDamageable hitable))
+            if (other.collider.TryGetComponent(out IDamageable damageable))
             {
-                hitable.ApplyDamage(_damage, other.contacts[0].normal);
+                damageable.ApplyDamage(_damage, other.contacts[0].normal);
                 Quaternion rotation = Quaternion.FromToRotation(Vector3.up, normal);
                 Instantiate(particle, pos, rotation);
                 Destroy(gameObject);
