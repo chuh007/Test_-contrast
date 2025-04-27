@@ -7,36 +7,29 @@ namespace Code.Entities
 {
     public class EntityHealth : MonoBehaviour, IEntityComponent, IAfterInit
     {
-        // [SerializeField] private StatSO hpStat;
         public float maxHealth;
         private float _currentHealth;
-        
-        public event Action<Vector2> OnKnockback;
+
+        public event Action<float> DamageEvt;
         
         private Entity _entity;
 
-        // private EntityStat _statCompo;
-        // private EntityFeedbackData _feedbackData;
 
         #region Initialize section
 
         public void Initialize(Entity entity)
         {
             _entity = entity;
-            // _statCompo = _entity.GetCompo<EntityStat>();
-            // _feedbackData = _entity.GetCompo<EntityFeedbackData>();
         }
         
         public void AfterInit()
         {
-            // _statCompo.GetStat(hpStat).OnValueChange += HandleHPChange;
             _currentHealth = maxHealth;
             _entity.OnDamage += ApplyDamage;
         }
 
         private void OnDestroy()
         {
-            // _statCompo.GetStat(hpStat).OnValueChange -= HandleHPChange;
             _entity.OnDamage -= ApplyDamage;
         }
 
@@ -55,7 +48,7 @@ namespace Code.Entities
         private void AfterHitFeedbacks(Vector2 direction)
         {
             _entity.OnHit?.Invoke();
-            OnKnockback?.Invoke(direction);
+            DamageEvt?.Invoke(_currentHealth);
 
             if (_currentHealth <= 0)
             {
